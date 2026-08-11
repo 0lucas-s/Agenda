@@ -25,7 +25,7 @@ def favoritar_contato():
 
 def ver_contatos():
   if not contatos: # Se não tiver contatos, então rodar o print abaixo
-    print("\nNão tem contatos para ser adicionado!")
+    print("\nNão tem contatos adicionados!")
   else:
     print("\nContatos:")
     for indice, contato in enumerate(contatos, start=1): # Numéra automaticamente a lista 'contatos'
@@ -44,14 +44,22 @@ def ver_favoritos():
 def editar_contato(contatos): # Recebe parametros de fora da função dentro dos ()
   while True:
     ver_contatos()
-    indice_contato = input('\nDigite o número do contato que deseja editar ou 0 pra voltar? ')
+    if not contatos:
+      break
+    else: 
+      indice_contato = input('\nDigite o número do contato que deseja editar ou 0 pra voltar? ')
     if indice_contato == '0':
       break
+    indice_contato_ajustado = int(indice_contato) -1
+    if indice_contato_ajustado >= len(contatos):
+      print('\nEsse contato não existe')
+      continue # pula pro proximo código
     while True:
       print('\nO que deseja editar? '
             '\n1. Nomes'
             '\n2. Número'
-            '\n3. Email')
+            '\n3. Email'
+            '\n4. Excluir contato')
       campo = input('\nDigite o número que deseja editar ou 0 pra voltar: ')
       if campo == '1':
         novo_nome = input('Digite o novo nome: ')
@@ -68,10 +76,21 @@ def editar_contato(contatos): # Recebe parametros de fora da função dentro dos
         indice_contato_ajustado = int(indice_contato) -1
         contatos[indice_contato_ajustado]["Email"] = novo_email
         print(f'\nEmail do contato {indice_contato} atualizado para | {novo_email} | com sucesso!')
+      elif campo == '4':
+        indice_contato_ajustado = int(indice_contato) -1
+        resposta = input('Certeza que deseja excluir contato?(s/n) ')
+        if resposta == 's':
+          contatos.pop(indice_contato_ajustado)
+          print('\nContato excluido com sucesso!')
+          break
+        elif resposta == 'n':
+          print('\nExclusão cancelada!')
+        else:
+          print('\nOpção invalida!')
       elif campo == "0":
         break
       else:
-        print('Isso não existe!')
+        print('\nIsso não existe!')
 
 while True: # Faz rodar infinitamente até ser fechado
   print("\nAgenda de Contatos")
